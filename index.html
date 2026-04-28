@@ -33,7 +33,7 @@
         @keyframes pulse-animation {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
             70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
         }
 
         .loader {
@@ -57,11 +57,18 @@
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(4px);
         }
+
+        /* Hover effect untuk kad statistik */
+        .stat-card-clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #3b82f6;
+        }
     </style>
 </head>
 <body class="min-h-screen text-slate-900 overflow-x-hidden">
 
-    <!-- Navigasi Atas -->
+    <!-- Header / Navigasi -->
     <header class="bg-blue-700 text-white shadow-2xl sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-4">
@@ -71,7 +78,7 @@
                 <div>
                     <h1 class="text-xl font-extrabold tracking-tight uppercase leading-none">Hospital Pulau Pinang</h1>
                     <p class="text-[10px] text-blue-100 uppercase tracking-widest font-bold mt-1 flex items-center gap-2">
-                        <span class="status-pulse"></span> Unit Latihan • Sistem Pengurusan Pelatih Live
+                        <span class="status-pulse"></span> Unit Latihan • Sistem Pengurusan Pelatih v7.2
                     </p>
                 </div>
             </div>
@@ -94,12 +101,12 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-10">
-        <!-- Bahagian Dashboard -->
+        <!-- Dashboard Section -->
         <section id="section-dashboard" class="space-y-10 fade-in">
-            <!-- Statistik Utama -->
+            <!-- Kad Statistik Utama (Kini Interaktif) -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6" id="stats-container"></div>
 
-            <!-- Carta Kemasukan Pelatih -->
+            <!-- Trend Bulanan -->
             <div class="grid grid-cols-1 gap-8">
                 <div class="bg-white p-8 md:p-10 rounded-[3rem] shadow-sm border border-slate-200">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
@@ -119,7 +126,7 @@
                 </div>
             </div>
 
-            <!-- Senarai Kad Jabatan -->
+            <!-- Jabatan Section -->
             <div class="bg-white p-10 rounded-[3.5rem] shadow-sm border border-slate-200">
                 <div class="flex items-center gap-3 mb-10">
                     <div class="bg-indigo-50 p-2 rounded-lg text-indigo-600"><i data-lucide="briefcase" class="w-5 h-5"></i></div>
@@ -132,7 +139,7 @@
             </div>
         </section>
 
-        <!-- Bahagian Carian -->
+        <!-- Search Section -->
         <section id="section-search" class="hidden space-y-8 fade-in">
             <div class="bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-200">
                 <div class="relative">
@@ -160,7 +167,7 @@
         </section>
     </main>
 
-    <!-- Modal Dinamik Perincian (IPT & Jabatan) -->
+    <!-- Modal Dinamik (IPT, Jabatan, & Kategori) -->
     <div id="detail-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 md:p-10">
         <div class="absolute inset-0 modal-backdrop" onclick="hideDetailModal()"></div>
         <div class="bg-white w-full max-w-5xl rounded-[3rem] shadow-2xl relative z-10 overflow-hidden flex flex-col max-h-full fade-in">
@@ -174,7 +181,7 @@
                         <p id="modal-sub-title" class="text-[10px] text-slate-400 font-bold uppercase tracking-widest"></p>
                     </div>
                 </div>
-                <button onclick="hideDetailModal()" class="p-2 hover:bg-red-50 rounded-full transition-colors text-slate-400 hover:text-red-500">
+                <button onclick="hideDetailModal()" class="p-2 hover:bg-red-50 rounded-full transition-colors text-slate-400">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
@@ -204,8 +211,8 @@
                                     <tr>
                                         <th class="px-8 py-5 text-center w-16">Bil</th>
                                         <th class="px-8 py-5">Nama Pelatih</th>
-                                        <th id="col-extra-head" class="px-8 py-5">Institusi / Jabatan</th>
-                                        <th class="px-8 py-5">Program</th>
+                                        <th id="col-extra-head" class="px-8 py-5">Info Tambahan</th>
+                                        <th class="px-8 py-5">Program / Jabatan</th>
                                         <th class="px-8 py-5 text-right">Tempoh Latihan</th>
                                     </tr>
                                 </thead>
@@ -218,7 +225,7 @@
         </div>
     </div>
 
-    <!-- Status Floating Footer -->
+    <!-- Status Bar Floating -->
     <footer class="fixed bottom-8 right-8 z-50">
         <div class="bg-slate-900/95 backdrop-blur-md text-white px-6 py-3.5 rounded-2xl shadow-2xl flex items-center gap-4 border border-slate-700/50">
             <span class="status-pulse"></span>
@@ -232,7 +239,7 @@
         </div>
     </footer>
 
-    <!-- Skrin Pemuatan (Loading) -->
+    <!-- Skrin Pemuatan -->
     <div id="loading-overlay" class="fixed inset-0 bg-slate-50 z-[100] flex flex-col items-center justify-center p-10 text-center">
         <div class="loader mb-10 shadow-2xl shadow-blue-100"></div>
         <h2 class="text-2xl font-black text-slate-800 uppercase tracking-tighter mb-2 leading-none">Unit Latihan HPP</h2>
@@ -240,7 +247,6 @@
     </div>
 
     <script>
-        // MASUKKAN URL API GOOGLE APPS SCRIPT ANDA DI SINI
         const API_URL = "https://script.google.com/macros/s/AKfycbwTDwv1kx32U1gTC4MXAn0odO-GVvMBNeN_ugnHWNeHZkdN9VhZ1N17c8EPYbW4KdbR3g/exec";
 
         let trainees = [], selectedYear = 'All', searchQuery = '', mainChart = null, iptChart = null;
@@ -248,13 +254,11 @@
 
         const clean = (v) => String(v || '').trim().toUpperCase();
 
-        // Cari nilai berdasarkan kunci keywords (IPT/IC/NAMA dsb)
         const getVal = (obj, keywords) => {
             const key = Object.keys(obj).find(k => keywords.some(kw => clean(k).includes(kw.toUpperCase())));
             return key ? obj[key] : "";
         };
 
-        // Memastikan tarikh 12.01 dibaca sebagai 12 Januari
         function safeParseDate(str) {
             if (!str) return null;
             if (typeof str !== 'string') str = String(str);
@@ -331,35 +335,34 @@
                 ipts[iName] = (ipts[iName] || 0) + 1;
             });
 
-            // Statistik Utama
+            // Update Kad Statistik dengan onclick handler
             document.getElementById('stats-container').innerHTML = `
                 <div class="bg-slate-900 text-white p-7 rounded-[2.5rem] shadow-xl flex flex-col justify-between h-48 border border-slate-800">
                     <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Total Pelatih</p>
                     <p class="text-6xl font-black tracking-tighter">${stats.Total}</p>
                 </div>
-                <div onclick="showIptModal()" class="bg-blue-600 text-white p-7 rounded-[2.5rem] shadow-xl flex flex-col justify-between h-48 cursor-pointer hover:bg-blue-700 active:scale-95 transition-all group">
+                <div onclick="showIptModal()" class="bg-blue-600 text-white p-7 rounded-[2.5rem] shadow-xl flex flex-col justify-between h-48 cursor-pointer stat-card-clickable transition-all group">
                     <div class="flex justify-between items-start"><p class="text-blue-100 text-[10px] font-black uppercase tracking-widest">Institusi</p><i data-lucide="bar-chart-2" class="w-4 h-4 opacity-70"></i></div>
                     <p class="text-6xl font-black tracking-tighter">${Object.keys(ipts).length}</p>
                 </div>
-                <div class="bg-white p-7 rounded-[2.5rem] border border-slate-200 flex flex-col justify-between h-48 hover:shadow-lg transition-all shadow-sm">
+                <div onclick="showCategoryModal('Sangkutan')" class="bg-white p-7 rounded-[2.5rem] border border-slate-200 flex flex-col justify-between h-48 shadow-sm cursor-pointer stat-card-clickable transition-all">
                     <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-inner"><i data-lucide="clipboard-list"></i></div>
                     <div><p class="text-slate-400 text-[9px] font-black uppercase tracking-widest">Sangkutan</p><p class="text-3xl font-black text-slate-800 tracking-tighter">${stats.Sangkutan}</p></div>
                 </div>
-                <div class="bg-white p-7 rounded-[2.5rem] border border-slate-200 flex flex-col justify-between h-48 hover:shadow-lg transition-all shadow-sm border-l-4 border-l-emerald-500">
+                <div onclick="showCategoryModal('Klinikal')" class="bg-white p-7 rounded-[2.5rem] border border-slate-200 flex flex-col justify-between h-48 shadow-sm cursor-pointer stat-card-clickable transition-all border-l-4 border-l-emerald-500">
                     <div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 shadow-inner"><i data-lucide="stethoscope"></i></div>
                     <div><p class="text-slate-400 text-[9px] font-black uppercase tracking-widest">Klinikal</p><p class="text-3xl font-black text-emerald-600 tracking-tighter">${stats.Klinikal}</p></div>
                 </div>
-                <div class="bg-white p-7 rounded-[2.5rem] border border-slate-200 flex flex-col justify-between h-48 hover:shadow-lg transition-all shadow-sm border-l-4 border-l-amber-500">
+                <div onclick="showCategoryModal('Industri')" class="bg-white p-7 rounded-[2.5rem] border border-slate-200 flex flex-col justify-between h-48 shadow-sm cursor-pointer stat-card-clickable transition-all">
                     <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600 shadow-inner"><i data-lucide="building-2"></i></div>
                     <div><p class="text-slate-400 text-[9px] font-black uppercase tracking-widest">Industri</p><p class="text-3xl font-black text-amber-600 tracking-tighter">${stats.Industri}</p></div>
                 </div>
-                <div class="bg-white p-7 rounded-[2.5rem] border border-slate-200 flex flex-col justify-between h-48 hover:shadow-lg transition-all shadow-sm border-l-4 border-l-purple-500">
+                <div onclick="showCategoryModal('Elektif')" class="bg-white p-7 rounded-[2.5rem] border border-slate-200 flex flex-col justify-between h-48 shadow-sm cursor-pointer stat-card-clickable transition-all">
                     <div class="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 shadow-inner"><i data-lucide="book-open"></i></div>
                     <div><p class="text-slate-400 text-[9px] font-black uppercase tracking-widest">Elektif</p><p class="text-3xl font-black text-purple-600 tracking-tighter">${stats.Elektif}</p></div>
                 </div>
             `;
 
-            // Jabatan Cards
             const sortedDepts = Object.entries(depts).sort((a,b) => b[1] - a[1]);
             document.getElementById('dept-list').innerHTML = sortedDepts.map(([name, count]) => `
                 <button onclick="showDeptModal('${name.replace(/'/g, "\\'")}')" class="bg-slate-50/50 p-6 rounded-3xl border border-slate-100 hover:bg-white hover:border-indigo-500 hover:shadow-xl transition-all group text-left">
@@ -371,12 +374,7 @@
                 </button>
             `).join('');
 
-            // Jadual Utama
-            document.getElementById('trainee-table-body').innerHTML = filtered.sort((a,b) => {
-                const nameA = clean(getVal(a, ["NAMA"]));
-                const nameB = clean(getVal(b, ["NAMA"]));
-                return nameA.localeCompare(nameB);
-            }).map((t, i) => `
+            document.getElementById('trainee-table-body').innerHTML = filtered.sort((a,b) => clean(getVal(a, ["NAMA"])).localeCompare(clean(getVal(b, ["NAMA"])))).map((t, i) => `
                 <tr class="hover:bg-blue-50/20 transition-colors group">
                     <td class="px-10 py-7 text-slate-300 font-extrabold text-center w-16">${i+1}</td>
                     <td class="px-8 py-7"><p class="font-black text-slate-800 mb-0.5 leading-none uppercase">${getVal(t, ["NAMA"])}</p><p class="text-[10px] font-mono text-slate-400 tracking-tighter">${getVal(t, ["IC", "KAD PENGENALAN"])}</p></td>
@@ -408,6 +406,58 @@
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { borderDash: [5,5], color: '#f1f5f9' }, ticks: { precision: 0 } }, x: { grid: { display: false }, ticks: { font: { weight: 'bold' } } } } } 
             });
         }
+
+        // --- FUNGSI MODAL ---
+
+        window.hideDetailModal = () => { document.getElementById('detail-modal').classList.add('hidden'); document.body.style.overflow = ''; };
+
+        // MODAL KATEGORI (CIRI BARU)
+        window.showCategoryModal = (categoryName) => {
+            const modal = document.getElementById('detail-modal');
+            const titleEl = document.getElementById('modal-main-title');
+            const subTitleEl = document.getElementById('modal-sub-title');
+            const selectedNameEl = document.getElementById('selected-detail-name');
+            const iconContainer = document.getElementById('modal-icon-container');
+            const colExtraHead = document.getElementById('col-extra-head');
+            
+            modal.classList.remove('hidden');
+            document.getElementById('modal-chart-section').classList.add('hidden');
+            document.body.style.overflow = 'hidden';
+
+            titleEl.innerText = "Analisis Kategori Latihan";
+            subTitleEl.innerText = "Senarai Pelatih mengikut jenis latihan";
+            selectedNameEl.innerText = "Kategori: " + categoryName;
+            
+            // Set icon ikut kategori
+            const icons = { 'Sangkutan': 'clipboard-list', 'Klinikal': 'stethoscope', 'Industri': 'building-2', 'Elektif': 'book-open' };
+            const colors = { 'Sangkutan': 'bg-blue-600', 'Klinikal': 'bg-emerald-500', 'Industri': 'bg-amber-500', 'Elektif': 'bg-purple-500' };
+            
+            iconContainer.className = `${colors[categoryName] || 'bg-blue-600'} p-2.5 rounded-2xl text-white shadow-lg`;
+            iconContainer.innerHTML = `<i data-lucide="${icons[categoryName] || 'info'}" class="w-6 h-6"></i>`;
+            colExtraHead.innerText = "IPT / Institusi";
+
+            const filteredByYear = trainees.filter(t => { 
+                const d = safeParseDate(getVal(t, ["MULA"])); 
+                return selectedYear === 'All' || (d && d.getFullYear().toString() === selectedYear); 
+            });
+
+            const filtered = filteredByYear.filter(t => getCategory(t) === categoryName)
+                             .sort((a,b) => clean(getVal(a, ["NAMA"])).localeCompare(clean(getVal(b, ["NAMA"]))));
+
+            document.getElementById('trainee-count-label').innerText = `${filtered.length} Pelatih`;
+            document.getElementById('modal-trainee-table-body').innerHTML = filtered.map((t, idx) => `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="px-8 py-4 text-center font-bold text-slate-300 w-16">${idx+1}</td>
+                    <td class="px-8 py-4 font-black text-slate-800 leading-none">${getVal(t, ["NAMA"]) || '-'}</td>
+                    <td class="px-8 py-4 uppercase text-[10px] font-bold text-slate-500">${getVal(t, ["IPT", "INSTITUSI"]) || 'LAIN-LAIN'}</td>
+                    <td class="px-8 py-4 uppercase text-[10px] text-blue-600 font-bold">${getVal(t, ["JABATAN", "UNIT"]) || '-'}</td>
+                    <td class="px-8 py-4 font-mono font-bold text-slate-400 text-right text-[10px]">${formatDate(getVal(t, ["MULA"]))} - ${formatDate(getVal(t, ["TAMAT"]))}</td>
+                </tr>
+            `).join('');
+            
+            lucide.createIcons();
+            document.getElementById('trainee-list-section').scrollTop = 0;
+        };
 
         // Modal Jabatan
         window.showDeptModal = (deptName) => {
@@ -535,8 +585,8 @@
             document.getElementById('trainee-list-section').scrollIntoView({ behavior: 'smooth' });
         }
 
-        window.hideDetailModal = () => { document.getElementById('detail-modal').classList.add('hidden'); document.body.style.overflow = ''; };
-        
+        // --- UTILITIES ---
+
         function updateYearDropdown() {
             const years = new Set();
             trainees.forEach(t => { const d = safeParseDate(getVal(t, ["MULA"])); if (d) years.add(d.getFullYear()); });
